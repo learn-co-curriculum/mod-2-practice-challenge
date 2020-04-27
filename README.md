@@ -1,8 +1,8 @@
-# Rails Code Challenge - Superheroines
+# Rails Practice Code Challenge - Bands
 
-For this assessment, you'll be working with a heroines and powers domain.
+For this practice challenge, you'll be working with a Bands and Musicians domain.
 
-In this repo, there is a Rails application with some features built out. Your job is to extend this code to add the functionality described in the deliverables below.
+Your job is to add the functionality described in the deliverables below.
 
 ## Topics
 
@@ -15,39 +15,31 @@ In this repo, there is a Rails application with some features built out. Your jo
 
 ## Setup
 
-Before you begin coding your solution, clone this repo and then `cd` into it. Then run `bundle install`, `rails db:migrate`, and `rails db:seed` to install dependencies and set up the database, and run `rails s` to start the server.
+Before you begin coding your solution, clone this repo and then `cd` into it. Then run `bundle install` to install dependencies, and run `rails s` to start the server.
+
+## Testing Your Work
+
+Although a test suite is included with this practice challenge, avoid running it until you've completed the whole challenge or several deliverables. Rely on behaviorally-driven development instead; you will not have a test suite during the actual challenge, so it's important to get comfortable with testing your code yourself.
 
 ## Domain
 
-There are three models in the domain: Power, Heroine, and a join model HeroinePower.
+There are three models in the domain: Band, Musician, and a join model BandMember.
 
-Each Heroine can have multiple powers. Powers can belong to multiple Heroines.
+Musicians and Bands have a many to many relationship through BandMembers. A single BandMember belongs to one Band and one Musician.
 
 ## What You Already Have
 
-The starter code has migrations, models, and seed data for the initial Power and Heroine models. There are also routes, controllers and views to support the Power and Heroine index pages.
+The starter code is currently an empty Rails project. You will need to create and run all of the migrations yourself to generate the correct schema and relationships. You will also need to create the routes, controllers, and views to support listing Bands and Musicians.
 
-Once you have followed the setup instructions above, visiting the `/powers` route will display all of the Powers. Similarly, visiting `/heroines` will list all the heroines.
+### Model Methods and Validations
+- None
 
-***Schema***
+### Routes, Controllers and Views
+- None
 
-Heroine
-
-| Column | Type |
-| ------------- | ------------- |
-| name | String |
-| super_name | String |
-| created_at  | DateTime  |
-| updated_at  | DateTime  |
-
-Power
-
-| Column | Type |
-| ------------- | ------------- |
-| name  | String  |
-| description | String  |
-| created_at  | DateTime  |
-| updated_at  | DateTime  |
+### Seed Data
+- There is seed data for every model
+- You will need to create the migrations and models for Band, Musician, and BandMember before running `rails db:seed`
 
 ## Instructions
 
@@ -55,79 +47,94 @@ Update the code of the application to meet the following deliverables. Follow RE
 
 ***Read through these deliverables carefully to understand the requirements for this code challenge. Tackle them one by one, as they build on each other sequentially.***
 
-### 1. HeroinePower association
+### 1. Band Migration and Model
 
-Create the association between the models. Update the schema and models to create the HeroinePower association.
+Generate and run a migration to create the following schema for a Band:
+- name: string
+- created_at: DateTime
+- updated_at: DateTime
 
-A HeroinePower should have a:
+Generate the model file.
 
-- heroine
-- power
-- strength, as a string value
+### 2. Musician Migration
 
-Each Heroine can have multiple powers. Powers can belong to multiple Heroines. Each HeroinePower has its own strength value.
+Generate and run a migration to create the following schema for a Musician:
+- name: string
+- age: integer
+- created_at: DateTime
+- updated_at: DateTime
 
-### 2. Heroine index page links
+Generate the model file.
 
-On the heroines index page, a heroine's super name should link to that heroine's show page.
+### 3. BandMember Migration and Model
 
-### 3. Heroine show page
+To track which Musicians belong to which Bands, we need to create a BandMember model. Update the schema and models so that:
+- A Musician can be in many Bands
+- Bands can have many Musicians
+- BandMember stores the instrument a Musician plays in a Band as a string, e.g. 'guitar'
 
-Each Heroine show page should include the:
+### 4. Create the Band Index Page
 
-- name (eg. Kamala Khan)
-- super name (eg. Ms. Marvel)
+Generate the appropriate routes, controller actions and views so that navigating to `/bands`:
+- Displays a list of every Band
+- Links the name of each Band to a Band show page
 
-### 4. Power show page
+### 5.  Create the Musician Index Page
 
-Power show page should include the:
+Generate the appropriate routes, controller actions and views so that navigating to `/musicians`:
+- Displays a list of every Musician
+- Links the name of each Musician to a Musician show page
 
-- name
-- description
+### 6. Complete the Band Show Page
 
-### 5. HeroinePower Create page
+Display the following information:
+- Band name
+- List of Musicians in the Band
+- The name of each Musician should link to the Musician show page
+- Next to each Musician's name, display the instrument the Musician plays in that specific Band
 
-Show a form to associate a Heroine with a Power. It should have:
+### 7. Complete the Musician Show Page
 
-- a select dropdown to choose a Heroine
-- a select dropdown to choose a Power
-- a text input to assign a string value to the HeroinePower's strength
-- a submit button to create the HeroinePower
+Display the following information:
+- Musician name
+- Musician age
+- List of Bands the Musician plays in
+- Each Band name should link to a Band show page
 
-After successfully creating a HeroinePower, the user should be redirected to the selected Heroine's show page.
+### 8.  New BandMember Form
 
-### 6. HeroinePower Strength Validation
+A user can associate a Band with a Musician via a form. They can:
+- Choose an existing Band from a dropdown
+- Choose an existing Musician from a dropdown
+- Enter an instrument name
+- Submit the form
 
-Add validations to the HeroinePower model:
+After submitting the form, the user should be redirected to the selected Band's show page.
 
-- strength must be one of the following values: 'Strong', 'Weak', 'Average'
+### 9. BandMember Validation
 
-Add error handling to the create action. If a user tries to create an invalid HeroinePower, the user should see the validation errors.
+Add a validation to the BandMember model, so that:
+- An instrument's name is at least 3 characters long
+- Add handling for this error to appear on the BandMember create action
+- The validation should be shown on the BandMember creation form when a user tries to create a BandMember with an invalid instrument
 
-### 7. Advanced: HeroinePower Power Validation
+### 10. Advanced: Additional BandMember Validation
 
-No Heroine should be associated with the same Power twice. (It doesn't make sense for Ms Marvel to be associated with Seventh Sense twice!)
+A Musician should not be listed in the same Band twice:
+- Add a validation to BandMember to ensure a Musician is only listed in a Band once
+- Update the error handling on the BandMember creation form to show the validation error
 
-- Add a validation to prevent this.
-- Update the error handling in the create action to display this error
+### 11. Advanced: Band Average Age
 
-### 8. Advanced: Display Heroines' Powers
+On the Band show page, show the average age of all Musicians in the Band. The average is the mean age (sum all ages and then divide by the number of band members).
 
-Update the Heroine show page to display the Powers that the heroine has.
+### 12. Advanced: Musician Index Page Ordering
 
-Each power should link to the corresponding Power show page.
+On the Musician index page, order the Musicians according to how many Bands they are in. Musicians in the most Bands should appear first, and Musicians in the least Bands should appear last.
 
-### 9. Advanced: Display the Strength of Each Heroine's Powers
+### 13. Advanced: Band Show Page Musician Ordering
 
-Update the Heroine's show page to display the strength of the Power next to the Power.
-
-### 10. Advanced: Powers Index Page Display Heroine Count
-
-On the Powers index page, show the total number of Heroines for each Power.
-
-### Feature Demo
-
-![screen capture of feature demo](heroines-features-demo.gif)
+On the Band show page, order the Musicians by age going from oldest to youngest.
 
 ## Rubric
 
