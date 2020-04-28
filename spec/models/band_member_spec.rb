@@ -24,4 +24,12 @@ RSpec.describe BandMember, type: :model do
   it 'has an id' do
     expect(@band_member.id).not_to be_nil
   end
+
+  it 'belongs to a band' do
+    expect(@band_member.band).to eq(@band)
+  end
+
+  it 'belongs to a musician' do
+    expect(@band_member.musician).to eq(@musician)
+  end
 end
