@@ -1,0 +1,7 @@
+<h1><%= @band.name %></h1>
+
+<ul>
+  <% @band.band_members.each do |member| %>
+    <li><%= link_to member.musician.name, musician_path(member.musician) %> <%= member.instrument %></li>
+  <% end %>
+</ul>
