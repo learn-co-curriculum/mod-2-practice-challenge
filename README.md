@@ -104,8 +104,8 @@ Display the following information:
 ### 8.  New BandMember Form
 
 A user can associate a Band with a Musician via a form. They can:
-- Choose an existing Band from a dropdown
-- Choose an existing Musician from a dropdown
+- Choose an existing Band by name from a dropdown
+- Choose an existing Musician by name from a dropdown
 - Enter an instrument name
 - Submit the form
 
