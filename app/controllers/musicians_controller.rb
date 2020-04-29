@@ -1,6 +1,6 @@
 class MusiciansController < ApplicationController
   def index
-    @musicians = Musician.all
+    @musicians = Musician.order_by_band_number
   end
 
   def show

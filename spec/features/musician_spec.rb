@@ -51,4 +51,28 @@ describe 'musician features' do
       expect(page).to have_link(@band3.name, href: band_path(@band3))
     end
   end
+
+  context 'ADVANCED: index page' do
+    it 'orders the musicians by the number of bands they are in from most to least' do
+      band1 = Band.create(name: 'Test One')
+      band2 = Band.create(name: 'Test Two')
+      band3 = Band.create(name: 'Test Three')
+      m1 = Musician.create(name: 'A', age: 10)
+      m2 = Musician.create(name: 'B', age: 20)
+      m3 = Musician.create(name: 'C', age: 30)
+      [band1, band2, band3].each do |band|
+        BandMember.create(band_id: band.id, musician_id: m2.id, instrument: 'drums')
+      end
+      [band2, band3].each do |band|
+        BandMember.create(band_id: band.id, musician_id: m1.id, instrument: 'guitar')
+      end
+      [band3].each do |band|
+        BandMember.create(band_id: band.id, musician_id: m3.id, instrument: 'oboe')
+      end
+        
+      visit musicians_path
+
+      expect(page).to have_content("#{m2.name} #{m1.name} #{m3.name}")
+    end
+  end
 end
