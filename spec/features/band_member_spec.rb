@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'new band member features' do
-  $instrument = 'guitar'
+  instrument = 'guitar'
 
   before(:each) do
     @band1 = Band.create(name: 'Blarb')
@@ -12,10 +12,10 @@ describe 'new band member features' do
     visit 'band_members/new'
   end
 
-  def create_member
+  def create_member(instrument)
     select @band1.name, from: 'band_member_band_id'
     select @m1.name, from: 'band_member_musician_id'
-    fill_in 'band_member_instrument', with: $instrument
+    fill_in 'band_member_instrument', with: instrument
     click_button 'commit'
   end
 
@@ -32,16 +32,22 @@ describe 'new band member features' do
   end
 
   it 'creates a new band member' do
-    create_member
+    create_member(instrument)
 
     expect(BandMember.last.band_id).to eq(@band1.id)
     expect(BandMember.last.musician_id).to eq(@m1.id)
-    expect(BandMember.last.instrument).to eq($instrument)
+    expect(BandMember.last.instrument).to eq(instrument)
   end
 
   it 'redirects to the band show page for that band member' do
-    create_member
+    create_member(instrument)
 
     expect(page.current_path).to eq(band_path(@band1))
+  end
+
+  it 'displays an error if instrument does not have at least 3 characters' do
+    create_member('b')
+
+    expect(page).to have_content('Instrument is too short (minimum is 3 characters)')
   end
 end
