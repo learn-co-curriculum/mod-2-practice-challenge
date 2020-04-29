@@ -1,0 +1,14 @@
+<h1>New Band Member</h1>
+
+<%= form_for @band_member do |f| %>
+  <%= f.label 'Band' %>
+  <%= f.collection_select :band_id, Band.all, :id, :name %>
+
+  <%= f.label 'Musician' %>
+  <%= f.collection_select :musician_id, Musician.all, :id, :name %>
+
+  <%= f.label :instrument %>
+  <%= f.text_field :instrument %>
+
+  <%= f.submit %>
+<% end %>
