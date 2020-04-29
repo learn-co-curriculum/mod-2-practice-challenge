@@ -55,4 +55,20 @@ describe 'band features' do
       expect(page).to have_content(@bm3.instrument)
     end
   end
+
+  context 'ADVANCED: show page' do
+    it 'displays the average age (mean) of all band members' do
+      band = Band.create(name: 'Test One')
+      m1 = Musician.create(name: 'A', age: 10)
+      m2 = Musician.create(name: 'B', age: 30)
+      m3 = Musician.create(name: 'C', age: 20)
+      bm1 = BandMember.create(band_id: band.id, musician_id: m1.id, instrument: 'guitar')
+      bm2 = BandMember.create(band_id: band.id, musician_id: m2.id, instrument: 'drums')
+      bm3 = BandMember.create(band_id: band.id, musician_id: m3.id, instrument: 'bass')
+
+      visit band_path(band)
+
+      expect(page).to have_content('Average age: 20')
+    end
+  end
 end
