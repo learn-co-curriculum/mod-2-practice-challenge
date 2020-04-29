@@ -57,18 +57,24 @@ describe 'band features' do
   end
 
   context 'ADVANCED: show page' do
+    before(:each) do
+      @band = Band.create(name: 'Test One')
+      @m1 = Musician.create(name: 'A', age: 10)
+      @m2 = Musician.create(name: 'B', age: 30)
+      @m3 = Musician.create(name: 'C', age: 20)
+      @bm1 = BandMember.create(band_id: @band.id, musician_id: @m1.id, instrument: 'guitar')
+      @bm2 = BandMember.create(band_id: @band.id, musician_id: @m2.id, instrument: 'drums')
+      @bm3 = BandMember.create(band_id: @band.id, musician_id: @m3.id, instrument: 'bass')
+
+      visit band_path(@band)
+    end
+
     it 'displays the average age (mean) of all band members' do
-      band = Band.create(name: 'Test One')
-      m1 = Musician.create(name: 'A', age: 10)
-      m2 = Musician.create(name: 'B', age: 30)
-      m3 = Musician.create(name: 'C', age: 20)
-      bm1 = BandMember.create(band_id: band.id, musician_id: m1.id, instrument: 'guitar')
-      bm2 = BandMember.create(band_id: band.id, musician_id: m2.id, instrument: 'drums')
-      bm3 = BandMember.create(band_id: band.id, musician_id: m3.id, instrument: 'bass')
-
-      visit band_path(band)
-
       expect(page).to have_content('Average age: 20')
+    end
+
+    it 'orders the musicians by age' do
+      expect(page).to have_content("#{@m2.name} #{@bm2.instrument} #{@m3.name} #{@bm3.instrument} #{@m1.name} #{@bm1.instrument}")
     end
   end
 end
