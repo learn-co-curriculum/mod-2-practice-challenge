@@ -50,4 +50,11 @@ describe 'new band member features' do
 
     expect(page).to have_content('Instrument is too short (minimum is 3 characters)')
   end
+
+  it 'displays an error if a musician is being added to the same band again' do
+    BandMember.create(band_id: @band1.id, musician_id: @m1.id, instrument: instrument)
+    create_member(instrument)
+
+    expect(page).to have_content('Musician can only be listed in the same band once')
+  end
 end
