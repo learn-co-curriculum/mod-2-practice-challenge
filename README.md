@@ -123,6 +123,7 @@ Add a validation to the BandMember model, so that:
 A Musician should not be listed in the same Band twice:
 - Add a validation to BandMember to ensure a Musician is only listed in a Band once
 - Update the error handling on the BandMember creation form to show the validation error
+- The validation error should read "Musician can only be listed in the same band once"
 
 ### 11. Advanced: Band Average Age
 
